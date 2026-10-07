@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1dcb9a" />
+    <meta name="description" content="Houd je casusconceptualisatie bij en deel hem als PDF met je zorgverlener." />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <title>Casusconceptualisatie</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Casusconceptualisatie schema's</h1>
+      <span class="save-status" id="save-status" aria-live="polite"></span>
+    </header>
+
+    <main id="app"></main>
+
+    <footer class="actionbar">
+      <button type="button" class="btn btn-primary" id="btn-share">Delen als PDF</button>
+      <div class="menu">
+        <button type="button" class="btn btn-icon" id="btn-menu" aria-haspopup="true" aria-expanded="false" aria-label="Meer opties">⋮</button>
+        <div class="menu-list" id="menu-list" role="menu" hidden>
+          <button type="button" role="menuitem" data-action="backup">Backup maken</button>
+          <button type="button" role="menuitem" data-action="restore">Backup terugzetten</button>
+          <button type="button" role="menuitem" data-action="clear" class="danger">Alles wissen</button>
+        </div>
+      </div>
+      <input type="file" id="restore-input" accept="application/json,.json" hidden />
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
