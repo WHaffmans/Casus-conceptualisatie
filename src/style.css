@@ -72,7 +72,7 @@ main {
   padding: 14px;
 }
 
-.field { display: flex; flex-direction: column; gap: 4px; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .field label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
 
 input, textarea {
@@ -84,6 +84,21 @@ input, textarea {
   background: #fff;
   padding: 10px 12px;
 }
+input { min-width: 0; max-width: 100%; }
+
+/* Datumveld: mobiele browsers geven het een eigen minimale breedte, waardoor het uit de kaart steekt. */
+input[type='date'] {
+  display: block;
+  min-height: 46px;
+  line-height: 1.45;
+  text-align: left;
+}
+input[type='date']::-webkit-date-and-time-value { text-align: left; margin: 0; }
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari */
+  input[type='date'] { -webkit-appearance: none; appearance: none; }
+}
+
 textarea {
   resize: none;
   min-height: 84px;
