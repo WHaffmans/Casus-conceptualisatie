@@ -69,6 +69,35 @@ document.getElementById('btn-share').addEventListener('click', async (e) => {
   }
 });
 
+// Installeren op het beginscherm
+const installItem = document.getElementById('menu-install');
+const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let installPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  installPrompt = e;
+  installItem.hidden = false;
+});
+window.addEventListener('appinstalled', () => {
+  installPrompt = null;
+  installItem.hidden = true;
+});
+if (!isStandalone && isIOS) installItem.hidden = false;
+
+async function install() {
+  if (installPrompt) {
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    installItem.hidden = true;
+  } else if (isIOS) {
+    alert('Zo zet je de app op je beginscherm:\n\n1. Open deze pagina in Safari.\n2. Tik op de deelknop (vierkant met pijl omhoog).\n3. Kies "Zet op beginscherm".');
+  }
+}
+
 // Menu
 function setMenu(open) {
   menuList.hidden = !open;
@@ -87,7 +116,9 @@ menuList.addEventListener('click', (e) => {
   const action = e.target.closest('[data-action]')?.dataset.action;
   if (!action) return;
   setMenu(false);
-  if (action === 'backup') {
+  if (action === 'install') {
+    install();
+  } else if (action === 'backup') {
     if (saveTimer) saveNow();
     const date = new Date().toISOString().slice(0, 10);
     download(new Blob([toBackup(state)], { type: 'application/json' }), `casus-schema-backup-${date}.json`);
