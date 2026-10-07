@@ -85,14 +85,17 @@ window.addEventListener('appinstalled', () => {
   installPrompt = null;
   installItem.hidden = true;
 });
-if (!isStandalone && isIOS) installItem.hidden = false;
+const isAndroid = /Android/i.test(navigator.userAgent);
+if (!isStandalone && (isIOS || isAndroid)) installItem.hidden = false;
 
 async function install() {
   if (installPrompt) {
     installPrompt.prompt();
     await installPrompt.userChoice;
     installPrompt = null;
-    installItem.hidden = true;
+    if (!isAndroid) installItem.hidden = true;
+  } else if (isAndroid) {
+    alert('Zo zet je de app op je beginscherm:\n\n1. Open deze pagina in Chrome.\n2. Tik rechtsboven op het menu (⋮).\n3. Kies "App installeren" of "Toevoegen aan startscherm".');
   } else if (isIOS) {
     alert('Zo zet je de app op je beginscherm:\n\n1. Open deze pagina in Safari.\n2. Tik op de deelknop (vierkant met pijl omhoog).\n3. Kies "Zet op beginscherm".');
   }
